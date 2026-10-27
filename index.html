@@ -25,6 +25,20 @@ body{background:#fff0f8;background-image:radial-gradient(#ffc6e1 1.4px,transpare
 <script>
 (()=>{const carousel=document.querySelector('.cake-carousel');if(!carousel)return;const photos=[...carousel.querySelectorAll('.cake-slides img')];const dots=[...carousel.querySelectorAll('.cake-dots span')];const counter=carousel.querySelector('.cake-counter');let current=0;function show(i){current=(i+photos.length)%photos.length;photos.forEach((photo,j)=>photo.classList.toggle('active',j===current));dots.forEach((dot,j)=>dot.classList.toggle('active',j===current));counter.textContent=(current+1)+' of '+photos.length+' photos'}carousel.querySelector('.cake-prev').addEventListener('click',()=>show(current-1));carousel.querySelector('.cake-next').addEventListener('click',()=>show(current+1));let startX=null;const slides=carousel.querySelector('.cake-slides');slides.addEventListener('touchstart',e=>{startX=e.changedTouches[0].screenX},{passive:true});slides.addEventListener('touchend',e=>{if(startX===null)return;const dx=e.changedTouches[0].screenX-startX;if(Math.abs(dx)>35)show(current+(dx<0?1:-1));startX=null},{passive:true});})();
 </script><script>
-/* Reset direct homepage visits, including Safari's page-cache restores. */
-(()=>{if(location.hash)return;let interacted=false;const mark=()=>{interacted=true};window.addEventListener('touchstart',mark,{once:true,passive:true});window.addEventListener('wheel',mark,{once:true,passive:true});window.addEventListener('pointerdown',mark,{once:true,passive:true});const reset=()=>{if(!interacted&&!location.hash){document.documentElement.style.scrollBehavior='auto';window.scrollTo(0,0);document.documentElement.style.scrollBehavior=''}};reset();document.addEventListener('DOMContentLoaded',reset,{once:true});window.addEventListener('pageshow',reset);window.addEventListener('load',()=>{reset();requestAnimationFrame(reset)});})();
+/* Keep a new homepage visit at the top while images/fonts settle on mobile Safari. */
+(()=>{
+if(location.hash)return;
+let userMoved=false;
+const stop=()=>{userMoved=true};
+window.addEventListener('touchstart',stop,{once:true,passive:true});
+window.addEventListener('wheel',stop,{once:true,passive:true});
+window.addEventListener('pointerdown',stop,{once:true,passive:true});
+window.addEventListener('keydown',stop,{once:true});
+function top(){if(userMoved||location.hash)return;const root=document.documentElement;const prior=root.style.scrollBehavior;root.style.scrollBehavior='auto';window.scrollTo({top:0,left:0,behavior:'instant'});root.scrollTop=0;document.body.scrollTop=0;root.style.scrollBehavior=prior;}
+top();
+document.addEventListener('DOMContentLoaded',top,{once:true});
+window.addEventListener('pageshow',()=>{top();requestAnimationFrame(top)});
+window.addEventListener('load',top);
+let checks=0;const settle=()=>{if(userMoved||location.hash||checks++>100)return;top();requestAnimationFrame(settle)};requestAnimationFrame(settle);
+})();
 </script></body></html>
