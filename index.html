@@ -21,4 +21,8 @@ body{background:#fff0f8;background-image:radial-gradient(#ffc6e1 1.4px,transpare
 <footer><h2>Baking Done Right.</h2><p>Made for you. One dessert at a time.</p></footer>
 <script>
 (()=>{const carousel=document.querySelector('.cake-carousel');if(!carousel)return;const photos=[...carousel.querySelectorAll('.cake-slides img')];const dots=[...carousel.querySelectorAll('.cake-dots span')];const counter=carousel.querySelector('.cake-counter');let current=0;function show(i){current=(i+photos.length)%photos.length;photos.forEach((photo,j)=>photo.classList.toggle('active',j===current));dots.forEach((dot,j)=>dot.classList.toggle('active',j===current));counter.textContent=(current+1)+' of '+photos.length+' photos'}carousel.querySelector('.cake-prev').addEventListener('click',()=>show(current-1));carousel.querySelector('.cake-next').addEventListener('click',()=>show(current+1));let startX=null;const slides=carousel.querySelector('.cake-slides');slides.addEventListener('touchstart',e=>{startX=e.changedTouches[0].screenX},{passive:true});slides.addEventListener('touchend',e=>{if(startX===null)return;const dx=e.changedTouches[0].screenX-startX;if(Math.abs(dx)>35)show(current+(dx<0?1:-1));startX=null},{passive:true});})();
+</script><script>
+/* Start fresh visits at the top; preserve intentional section links. */
+if('scrollRestoration' in history)history.scrollRestoration='manual';
+window.addEventListener('load',()=>{if(!location.hash)window.scrollTo(0,0)});
 </script></body></html>
