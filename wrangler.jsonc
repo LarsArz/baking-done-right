@@ -1,0 +1,8 @@
+{
+  "name": "baking-done-right-git",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./",
+    "binding": "ASSETS"
+  }
+}
